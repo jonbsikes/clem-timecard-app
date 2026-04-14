@@ -3,7 +3,6 @@ import { createServerClient } from "@supabase/ssr";
 
 const URL_V = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
 const KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
-const BANG = String.fromCharCode(33);
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -37,5 +36,6 @@ export async function middleware(request: NextRequest) {
   return response;
 }
 
-const MATCHER = "/((?" + BANG + "_next/static|_next/image|favicon.ico|icon-.*\\.png|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)";
-export const config = { matcher: [MATCHER] };
+export const config = {
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|icon-.*\\.png|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+};
