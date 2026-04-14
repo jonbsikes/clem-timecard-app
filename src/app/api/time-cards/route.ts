@@ -36,12 +36,18 @@ export async function POST(req: NextRequest) {
   if (ce) return NextResponse.json({ error: ce.message }, { status: 400 });
 
   const rows = entries.map((e) => ({ ...e, time_card_id: card!.id }));
-  const { error: ee } = await supabase.from("time_card_entries").insert(rows);
+  const { data: inserted, error: ee } = await supabase
+    .from("time_card_entries")
+    .insert(rows)
+    .select("id");
   if (ee) {
     // Roll back the card on entry failure
     await supabase.from("time_cards").delete().eq("id", card!.id);
     return NextResponse.json({ error: ee.message }, { status: 400 });
   }
 
-  return NextResponse.json({ id: card!.id }, { status: 201 });
+  return NextResponse.json(
+    { id: card!.id, entry_ids: (inserted ?? []).map((r) => r.id) },
+    { status: 201 }
+  );
 }

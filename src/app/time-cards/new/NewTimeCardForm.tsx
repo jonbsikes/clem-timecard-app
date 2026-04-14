@@ -16,6 +16,7 @@ type Entry = {
   equipment_id: string;
   job_status: "in_progress" | "complete";
   notes: string;
+  photos: File[];
 };
 
 const uid = () => Math.random().toString(36).slice(2);
@@ -35,7 +36,7 @@ export default function NewTimeCardForm({
   const [projectDetails, setProjectDetails] = useState("");
   const [workDate, setWorkDate] = useState(today);
   const [entries, setEntries] = useState<Entry[]>([
-    { id: uid(), hours: "", work_type_id: workTypes[0]?.id ?? "", equipment_id: "", job_status: "in_progress", notes: "" },
+    { id: uid(), hours: "", work_type_id: workTypes[0]?.id ?? "", equipment_id: "", job_status: "in_progress", notes: "", photos: [] },
   ]);
   const [gps, setGps] = useState<{ lat: number; lng: number } | null>(null);
   const [busy, setBusy] = useState(false);
@@ -63,7 +64,7 @@ export default function NewTimeCardForm({
   function addEntry() {
     setEntries((es) => [
       ...es,
-      { id: uid(), hours: "", work_type_id: workTypes[0]?.id ?? "", equipment_id: "", job_status: "in_progress", notes: "" },
+      { id: uid(), hours: "", work_type_id: workTypes[0]?.id ?? "", equipment_id: "", job_status: "in_progress", notes: "", photos: [] },
     ]);
   }
   function removeEntry(id: string) {
@@ -115,6 +116,47 @@ export default function NewTimeCardForm({
         }
         const j = await res.json().catch(() => ({}));
         throw new Error(j.error || "Submit failed");
+      }
+      const created = (await res.json().catch(() => ({}))) as {
+        id?: string;
+        entry_ids?: string[];
+      };
+      // Upload photos for each entry (if any) — best-effort, errors don't block nav.
+      const entryIds = created.entry_ids ?? [];
+      const hasPhotos = entries.some((en) => en.photos.length > 0);
+      if (hasPhotos && entryIds.length === entries.length) {
+        try {
+          const supabase = createClient();
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user) {
+            for (let i = 0; i < entries.length; i++) {
+              const en = entries[i];
+              const entryId = entryIds[i];
+              for (const file of en.photos) {
+                const ext = file.name.split(".").pop() || "jpg";
+                const path = `${user.id}/${entryId}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+                const { error: upErr } = await supabase.storage
+                  .from("entry-photos")
+                  .upload(path, file, {
+                    contentType: file.type || "image/jpeg",
+                    upsert: false,
+                  });
+                if (upErr) continue;
+                const { data: signed } = await supabase.storage
+                  .from("entry-photos")
+                  .createSignedUrl(path, 60 * 60 * 24 * 365);
+                if (!signed?.signedUrl) continue;
+                await supabase.from("entry_photos").insert({
+                  time_card_entry_id: entryId,
+                  file_url: signed.signedUrl,
+                  storage_path: path,
+                });
+              }
+            }
+          }
+        } catch {
+          // Non-fatal — time card is already created
+        }
       }
       router.push("/time-cards");
       router.refresh();
@@ -214,6 +256,59 @@ export default function NewTimeCardForm({
             <label className="label">Notes</label>
             <textarea className="input" rows={2} value={en.notes}
                       onChange={(e) => update(en.id, { notes: e.target.value })} />
+          </div>
+          <div>
+            <label className="label">Photos</label>
+            <div className="flex flex-wrap gap-2 items-center">
+              <input
+                id={`photo-capture-${en.id}`}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="hidden"
+                onChange={(e) => {
+                  const files = e.target.files ? Array.from(e.target.files) : [];
+                  if (files.length) update(en.id, { photos: [...en.photos, ...files] });
+                  e.target.value = "";
+                }}
+              />
+              <input
+                id={`photo-upload-${en.id}`}
+                type="file"
+                accept="image/*"
+                multiple
+                className="hidden"
+                onChange={(e) => {
+                  const files = e.target.files ? Array.from(e.target.files) : [];
+                  if (files.length) update(en.id, { photos: [...en.photos, ...files] });
+                  e.target.value = "";
+                }}
+              />
+              <label htmlFor={`photo-capture-${en.id}`} className="btn-secondary inline-block cursor-pointer text-sm">
+                📷 Take photo
+              </label>
+              <label htmlFor={`photo-upload-${en.id}`} className="btn-secondary inline-block cursor-pointer text-sm">
+                🖼️ Upload
+              </label>
+            </div>
+            {en.photos.length > 0 && (
+              <ul className="mt-2 space-y-1 text-sm">
+                {en.photos.map((f, idx) => (
+                  <li key={idx} className="flex items-center justify-between gap-2 bg-stone-50 rounded px-2 py-1">
+                    <span className="truncate">{f.name || `photo-${idx + 1}.jpg`}</span>
+                    <button
+                      type="button"
+                      className="text-red-700 underline text-xs"
+                      onClick={() =>
+                        update(en.id, { photos: en.photos.filter((_, i) => i !== idx) })
+                      }
+                    >
+                      Remove
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       ))}
