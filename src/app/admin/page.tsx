@@ -127,6 +127,12 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
                 </div>
                 <div className="text-right">
                   <div className="font-bold">{total} hrs</div>
+                  <Link
+                    href={`/admin/time-cards/${c.id}`}
+                    className="text-xs text-brand underline"
+                  >
+                    Edit
+                  </Link>
                 </div>
               </div>
               <ul className="mt-2 text-sm text-stone-700 space-y-1">

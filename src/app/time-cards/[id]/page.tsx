@@ -31,6 +31,10 @@ export default async function TimeCardDetail({ params }: { params: Promise<{ id:
     0
   );
 
+  const submittedMs = new Date(card.submitted_at).getTime();
+  const within24h = Date.now() - submittedMs <= 24 * 60 * 60 * 1000;
+  const canEdit = !card.locked && within24h;
+
   return (
     <div className="space-y-4">
       <div>
@@ -45,8 +49,20 @@ export default async function TimeCardDetail({ params }: { params: Promise<{ id:
           <div className="text-right">
             <div className="text-2xl font-bold">{total} hrs</div>
             <div className={`text-xs ${card.locked ? "text-red-700" : "text-green-700"}`}>
-              {card.locked ? "Locked" : "Editable until midnight"}
+              {card.locked
+                ? "Locked"
+                : within24h
+                ? "Editable for 24h after submit"
+                : "Edit window closed"}
             </div>
+            {canEdit && (
+              <Link
+                href={`/time-cards/${card.id}/edit`}
+                className="mt-2 inline-block btn-primary text-xs px-3 py-2"
+              >
+                Edit
+              </Link>
+            )}
           </div>
         </div>
         {card.gps_lat && card.gps_lng && (

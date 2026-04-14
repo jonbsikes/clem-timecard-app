@@ -6,8 +6,9 @@ export default {
     extend: {
       colors: {
         brand: {
-          DEFAULT: "#B45309", // dirt/amber
-          dark: "#78350F",
+          DEFAULT: "#1034A6", // Egyptian blue
+          dark: "#0A2470",
+          light: "#2E57C9",
         },
       },
     },
