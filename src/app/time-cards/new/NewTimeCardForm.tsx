@@ -32,6 +32,7 @@ export default function NewTimeCardForm({
   const router = useRouter();
   const today = format(new Date(), "yyyy-MM-dd");
   const [projectId, setProjectId] = useState(projects[0]?.id ?? "");
+  const [projectDetails, setProjectDetails] = useState("");
   const [workDate, setWorkDate] = useState(today);
   const [entries, setEntries] = useState<Entry[]>([
     { id: uid(), hours: "", work_type_id: workTypes[0]?.id ?? "", equipment_id: "", job_status: "in_progress", notes: "" },
@@ -85,6 +86,7 @@ export default function NewTimeCardForm({
 
     const payload = {
       project_id: projectId,
+      project_details: projectDetails || null,
       work_date: workDate,
       gps_lat: gps?.lat ?? null,
       gps_lng: gps?.lng ?? null,
@@ -141,10 +143,21 @@ export default function NewTimeCardForm({
             {projects.length === 0 && <option value="">(no active projects)</option>}
             {projects.map((p) => (
               <option key={p.id} value={p.id}>
-                {p.name}{p.client_name ? ` — ${p.client_name}` : ""}
+                {p.name}
               </option>
             ))}
           </select>
+        </div>
+        <div>
+          <label className="label" htmlFor="project-details">Additional project details</label>
+          <input
+            id="project-details"
+            type="text"
+            className="input placeholder:text-stone-400 placeholder:italic"
+            placeholder="ie address, lot/block"
+            value={projectDetails}
+            onChange={(e) => setProjectDetails(e.target.value)}
+          />
         </div>
         <div>
           <label className="label" htmlFor="date">Date</label>

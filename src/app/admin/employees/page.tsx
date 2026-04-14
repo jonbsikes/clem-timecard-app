@@ -1,6 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import ConfirmButton from "@/components/ConfirmButton";
 
 export const dynamic = "force-dynamic";
 
@@ -31,9 +32,21 @@ async function update(formData: FormData) {
   "use server";
   const admin = createAdminClient();
   const id = String(formData.get("id"));
+  const full_name = String(formData.get("full_name") || "").trim();
   const role = String(formData.get("role")) as "employee" | "admin";
   const active = formData.get("active") === "on";
-  await admin.from("users").update({ role, active }).eq("id", id);
+  await admin.from("users").update({ full_name, role, active }).eq("id", id);
+  revalidatePath("/admin/employees");
+}
+
+async function remove(formData: FormData) {
+  "use server";
+  const admin = createAdminClient();
+  const id = String(formData.get("id"));
+  // Delete auth user first (cascade may clean profile row via trigger/FK).
+  await admin.auth.admin.deleteUser(id);
+  // Ensure profile row is gone even if no cascade.
+  await admin.from("users").delete().eq("id", id);
   revalidatePath("/admin/employees");
 }
 
@@ -42,7 +55,6 @@ async function resetPassword(formData: FormData) {
   const admin = createAdminClient();
   const email = String(formData.get("email") || "").trim();
   if (!email) return;
-  // Send a magic link the user can follow to set a new password.
   await admin.auth.resetPasswordForEmail(email, {
     redirectTo: process.env.NEXT_PUBLIC_SITE_URL ?? undefined,
   });
@@ -69,31 +81,56 @@ export default async function EmployeesAdmin() {
         <div className="flex items-end"><button className="btn-primary w-full">Invite</button></div>
       </form>
 
-      <div className="space-y-2">
+      <div className="space-y-3">
         {(users ?? []).map((u) => (
-          <div key={u.id} className="card p-4 flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <div className="font-medium">{u.full_name || "(no name)"}</div>
-              <div className="text-xs text-stone-500">{u.email}</div>
-            </div>
-            <div className="flex items-center gap-2">
-              <form action={resetPassword}>
-                <input type="hidden" name="email" value={u.email} />
-                <button className="btn-secondary text-sm">Send reset</button>
-              </form>
-              <form action={update} className="flex items-center gap-2 text-sm">
-                <input type="hidden" name="id" value={u.id} />
-                <select name="role" defaultValue={u.role} className="input !py-2 text-sm">
+          <details key={u.id} className="card p-4">
+            <summary className="flex items-center justify-between gap-4 cursor-pointer">
+              <div>
+                <div className="font-medium">{u.full_name || "(no name)"}</div>
+                <div className="text-xs text-stone-500">{u.email}</div>
+              </div>
+              <span className="text-xs uppercase tracking-wide text-stone-500">
+                {u.role}{u.active ? "" : " · inactive"}
+              </span>
+            </summary>
+
+            <form action={update} className="grid md:grid-cols-4 gap-3 mt-4 items-end">
+              <input type="hidden" name="id" value={u.id} />
+              <div className="md:col-span-2">
+                <label className="label">Full name</label>
+                <input className="input" name="full_name" defaultValue={u.full_name ?? ""} />
+              </div>
+              <div>
+                <label className="label">Role</label>
+                <select name="role" defaultValue={u.role} className="input">
                   <option value="employee">Employee</option>
                   <option value="admin">Admin</option>
                 </select>
-                <label className="flex items-center gap-1">
-                  <input type="checkbox" name="active" defaultChecked={u.active} /> Active
-                </label>
-                <button className="btn-primary text-sm">Save</button>
+              </div>
+              <label className="flex items-center gap-2 text-sm">
+                <input type="checkbox" name="active" defaultChecked={u.active} /> Active
+              </label>
+              <div className="md:col-span-4 flex gap-2">
+                <button className="btn-primary">Save changes</button>
+              </div>
+            </form>
+
+            <div className="mt-3 pt-3 border-t border-stone-200 flex flex-wrap gap-2">
+              <form action={resetPassword}>
+                <input type="hidden" name="email" value={u.email} />
+                <button className="btn-secondary text-sm">Send password reset</button>
+              </form>
+              <form action={remove}>
+                <input type="hidden" name="id" value={u.id} />
+                <ConfirmButton
+                  className="btn-secondary text-sm text-red-700"
+                  message={`Delete ${u.email}? This removes their login and profile.`}
+                >
+                  Delete employee
+                </ConfirmButton>
               </form>
             </div>
-          </div>
+          </details>
         ))}
       </div>
     </div>
