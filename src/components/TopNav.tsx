@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const PAGE_TITLES: Record<string, string> = {
@@ -24,20 +25,30 @@ export default function TopNav({ isAdmin = false }: Props) {
   const title = getPageTitle(pathname);
 
   return (
-    <header className="bg-brand text-white shadow-md">
+    <header className="bg-white border-b border-slate-200 shadow-sm">
       <div className="max-w-6xl mx-auto px-4 py-3 sm:py-4 flex items-center justify-between gap-3">
-        <h1 className="text-lg sm:text-xl font-bold leading-tight">{title}</h1>
+        <div className="flex items-center gap-3 min-w-0">
+          <Image
+            src="/clem.logo.jpg"
+            alt="Clem Excavation and Land Services LLC"
+            width={96}
+            height={96}
+            priority
+            className="rounded-lg shrink-0 w-10 h-10 sm:w-12 sm:h-12"
+          />
+          <h1 className="text-lg sm:text-xl font-bold leading-tight text-slate-900 truncate">{title}</h1>
+        </div>
         <nav className="flex items-center gap-3 sm:gap-4 text-sm shrink-0">
           {isAdmin && (
             <Link
               href="/admin"
-              className="hidden sm:inline hover:underline font-medium"
+              className="hidden sm:inline hover:underline font-medium text-slate-700"
             >
               Admin
             </Link>
           )}
           <form action="/auth/signout" method="post">
-            <button className="underline opacity-90 hover:opacity-100">
+            <button className="underline text-slate-600 hover:text-slate-900">
               Sign out
             </button>
           </form>
