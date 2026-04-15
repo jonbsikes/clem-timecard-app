@@ -14,8 +14,11 @@ async function invite(formData: FormData) {
   if (!email) return;
 
   // Invite via magic link; handle_new_user trigger creates profile row on confirmation.
+  // redirectTo sends the user to /auth/set-password so they can choose a password on first login.
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";
   const { data, error } = await admin.auth.admin.inviteUserByEmail(email, {
     data: { full_name },
+    redirectTo: `${siteUrl}/auth/callback?next=/auth/set-password`,
   });
   if (error || !data.user) return;
   await admin.from("users").upsert({
@@ -55,8 +58,9 @@ async function resetPassword(formData: FormData) {
   const admin = createAdminClient();
   const email = String(formData.get("email") || "").trim();
   if (!email) return;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";
   await admin.auth.resetPasswordForEmail(email, {
-    redirectTo: process.env.NEXT_PUBLIC_SITE_URL ?? undefined,
+    redirectTo: `${siteUrl}/auth/callback?next=/auth/set-password`,
   });
 }
 
