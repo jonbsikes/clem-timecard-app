@@ -56,8 +56,6 @@ export default async function ProjectsAdmin() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Projects</h1>
-
       <form action={create} className="card p-4 grid md:grid-cols-2 gap-3">
         <h2 className="md:col-span-2 font-semibold">Add project</h2>
         <div><label className="label">Name *</label><input className="input" name="name" required /></div>

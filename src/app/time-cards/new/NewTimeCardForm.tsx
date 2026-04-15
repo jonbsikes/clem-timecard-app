@@ -176,8 +176,6 @@ export default function NewTimeCardForm({
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
-      <h1 className="text-2xl font-bold">New Time Card</h1>
-
       <div className="card p-4 space-y-3">
         <div>
           <label className="label" htmlFor="project">Project</label>

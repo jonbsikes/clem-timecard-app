@@ -26,12 +26,7 @@ const TILES = [
 export default function AdminHub() {
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">
-          Admin Dashboard
-        </h1>
-        <p className="text-sm text-slate-600">Pick a section to manage.</p>
-      </div>
+      <p className="text-sm text-slate-600">Pick a section to manage.</p>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
         {TILES.map(({ href, label, Icon }) => (

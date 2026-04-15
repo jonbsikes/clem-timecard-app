@@ -16,12 +16,9 @@ export default async function FieldProjects() {
 
   return (
     <div className="space-y-4">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">Project Documents</h1>
-        <p className="text-sm text-slate-600">
-          Pick a project to view its site plans and uploaded documents.
-        </p>
-      </div>
+      <p className="text-sm text-slate-600">
+        Pick a project to view its site plans and uploaded documents.
+      </p>
 
       {list.length === 0 ? (
         <div className="card p-8 text-center text-slate-600">

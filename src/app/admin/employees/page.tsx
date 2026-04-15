@@ -66,8 +66,6 @@ export default async function EmployeesAdmin() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Employees</h1>
-
       <form action={invite} className="card p-4 grid md:grid-cols-4 gap-3">
         <div><label className="label">Email *</label><input className="input" type="email" name="email" required /></div>
         <div><label className="label">Full name</label><input className="input" name="full_name" /></div>

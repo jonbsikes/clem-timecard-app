@@ -43,7 +43,6 @@ export default async function AdminDocuments() {
         <Link href="/admin" className="text-sm text-brand hover:underline">
           &larr; Admin
         </Link>
-        <h1 className="text-2xl font-bold">Documents</h1>
         <p className="text-sm text-slate-600">
           {totalDocs} document{totalDocs === 1 ? "" : "s"} linked across{" "}
           {all.length} project{all.length === 1 ? "" : "s"}.

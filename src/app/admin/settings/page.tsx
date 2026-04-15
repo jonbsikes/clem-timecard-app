@@ -20,7 +20,6 @@ export default async function SettingsAdmin() {
   const { data: s } = await supabase.from("app_settings").select("*").eq("id", 1).maybeSingle();
   return (
     <div className="space-y-6 max-w-lg">
-      <h1 className="text-2xl font-bold">Settings</h1>
       <form action={save} className="card p-4 space-y-3">
         <div>
           <label className="label">Daily summary recipient email</label>

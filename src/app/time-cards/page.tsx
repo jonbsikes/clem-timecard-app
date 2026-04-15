@@ -55,12 +55,9 @@ export default async function MyTimeCards() {
 
   return (
     <div className="space-y-5">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">Log History</h1>
-        <p className="text-sm text-slate-600">
-          Week of {format(thisWeek.start, "MMM d")} to {format(thisWeek.end, "MMM d, yyyy")}
-        </p>
-      </div>
+      <p className="text-sm text-slate-600">
+        Week of {format(thisWeek.start, "MMM d")} to {format(thisWeek.end, "MMM d, yyyy")}
+      </p>
 
       <div className="grid grid-cols-3 gap-2 sm:gap-4">
         <div className="kpi">

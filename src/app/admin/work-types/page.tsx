@@ -39,8 +39,6 @@ export default async function WorkTypesAdmin() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Work Types</h1>
-
       <form action={add} className="card p-4 flex gap-2">
         <input className="input flex-1" name="name" placeholder="e.g., Grading" required />
         <button className="btn-primary">Add</button>

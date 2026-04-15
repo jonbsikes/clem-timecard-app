@@ -44,8 +44,6 @@ export default async function EquipmentAdmin() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Equipment</h1>
-
       <form action={add} className="card p-4 grid md:grid-cols-4 gap-3">
         <div><label className="label">Name *</label><input className="input" name="name" required /></div>
         <div><label className="label">Category</label><input className="input" name="category" /></div>

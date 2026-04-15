@@ -59,7 +59,6 @@ export default async function CompanyTimeDashboard({ searchParams }: { searchPar
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
           <Link href="/admin" className="text-sm text-brand hover:underline">&larr; Admin</Link>
-          <h1 className="text-2xl font-bold">Company Time</h1>
         </div>
         <a href={`/api/admin/export?${csvParams}`} className="btn-secondary text-sm">Export CSV</a>
       </div>
