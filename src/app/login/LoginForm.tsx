@@ -84,10 +84,15 @@ export default function LoginForm() {
         </button>
 
         <p className="mt-6 text-sm text-center text-stone-500">
-          New employee?{" "}
-          <a href="/auth/set-password" className="underline text-stone-700">
-            Set up your account
-          </a>
+          New employee? Check your invite email or{" "}
+          <button
+            type="button"
+            className="underline text-stone-700"
+            onClick={() => { setMode("magic"); setErr(null); setMsg(null); }}
+          >
+            use a magic link
+          </button>{" "}
+          to sign in without a password.
         </p>
       </div>
     </main>

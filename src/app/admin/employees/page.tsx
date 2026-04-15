@@ -18,7 +18,7 @@ async function invite(formData: FormData) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";
   const { data, error } = await admin.auth.admin.inviteUserByEmail(email, {
     data: { full_name },
-    redirectTo: `${siteUrl}/auth/callback?next=/auth/set-password`,
+    redirectTo: `${siteUrl}/auth/accept-invite`,
   });
   if (error || !data.user) return;
   await admin.from("users").upsert({
@@ -60,7 +60,7 @@ async function resetPassword(formData: FormData) {
   if (!email) return;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";
   await admin.auth.resetPasswordForEmail(email, {
-    redirectTo: `${siteUrl}/auth/callback?next=/auth/set-password`,
+    redirectTo: `${siteUrl}/auth/accept-invite`,
   });
 }
 
