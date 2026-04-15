@@ -44,20 +44,15 @@ export default function LoginForm() {
   return (
     <main className="min-h-screen grid place-items-center p-6 bg-stone-100">
       <div className="card w-full max-w-sm p-6">
-        <div className="flex flex-col items-center text-center mb-5">
+        <div className="flex flex-col items-center text-center mb-6">
           <Image
             src="/clem.logo.jpg"
             alt="Clem Excavation & Land Services LLC"
-            width={96}
-            height={96}
+            width={180}
+            height={180}
             priority
-            className="rounded-lg mb-3"
+            className="rounded-xl"
           />
-          <h1 className="text-xl font-bold leading-tight">
-            Clem Excavation &amp; Land Services LLC
-          </h1>
-          <p className="text-base font-semibold text-brand mt-1">Time Cards</p>
-          <p className="text-sm text-stone-600 mt-2">Sign in to submit your daily time card.</p>
         </div>
 
         <form onSubmit={submit} className="space-y-4">

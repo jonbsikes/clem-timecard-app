@@ -9,7 +9,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="min-h-screen">
-      <TopNav />
+      <TopNav isAdmin={true} />
       <main className="max-w-6xl mx-auto px-4 py-6">{children}</main>
     </div>
   );

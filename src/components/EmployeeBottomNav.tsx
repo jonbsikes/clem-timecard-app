@@ -64,7 +64,7 @@ export default function EmployeeBottomNav({ isAdmin = false }: Props) {
             {primary ? (
               <Link
                 href={href}
-                className="flex flex-col items-center -mt-6"
+                className="flex flex-col items-center -mt-6 pb-5"
                 aria-label={label}
               >
                 <span className="w-16 h-16 rounded-full bg-brand text-white shadow-lg flex items-center justify-center border-4 border-white">
@@ -78,7 +78,7 @@ export default function EmployeeBottomNav({ isAdmin = false }: Props) {
               <Link
                 href={href}
                 className={
-                  "flex flex-col items-center gap-1 py-3 px-2 min-w-[72px] " +
+                  "flex flex-col items-center gap-1 pt-3 pb-5 px-2 min-w-[72px] " +
                   (active ? "text-brand" : "text-slate-600")
                 }
               >
