@@ -55,23 +55,64 @@ export const IconBuilding = (p: IconProps) => (
   </svg>
 );
 
+// Projects: horizon landscape with a setting sun and trees
 export const IconProjects = (p: IconProps) => (
   <svg {...base(p)}>
-    <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+    {/* sun on the horizon */}
+    <circle cx="12" cy="15" r="3.2" />
+    {/* horizon line */}
+    <path d="M2 15h20" />
+    {/* sun rays above horizon */}
+    <path d="M12 9.5v1.5M7.5 11.5l1 1M16.5 11.5l-1 1" />
+    {/* left tree (pine) */}
+    <path d="M5 15l2-4 2 4z" />
+    <path d="M7 15v2.5" />
+    {/* right tree (pine) */}
+    <path d="M16 15l2.2-4.5 2.2 4.5z" />
+    <path d="M18.2 15v2.5" />
+    {/* ground */}
+    <path d="M3 19h18" />
   </svg>
 );
 
+// Work Types: construction worker with a shovel
 export const IconWrench = (p: IconProps) => (
   <svg {...base(p)}>
-    <path d="M14.7 6.3a4 4 0 0 1 5 5l-2.3-2.3-1.4 1.4 2.3 2.3a4 4 0 0 1-5-5l-7 7a2 2 0 0 0 2.8 2.8l7-7z" />
+    {/* hard hat */}
+    <path d="M7.5 7.5a3.5 3.5 0 0 1 7 0" />
+    <path d="M6.5 7.5h9" />
+    {/* head */}
+    <circle cx="11" cy="10" r="2" />
+    {/* body */}
+    <path d="M11 12v5" />
+    {/* arms - one holding shovel */}
+    <path d="M11 13l3.5 2" />
+    <path d="M11 13l-2.5 2" />
+    {/* legs */}
+    <path d="M11 17l-2 4M11 17l2 4" />
+    {/* shovel handle */}
+    <path d="M14.5 15l4.5-4.5" />
+    {/* shovel blade */}
+    <path d="M19 10.5l2.5 2.5-1.5 1.5-2.5-2.5z" />
   </svg>
 );
 
+// Equipment: skid steer loader
 export const IconTruck = (p: IconProps) => (
   <svg {...base(p)}>
-    <path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" />
-    <circle cx="7" cy="18" r="2" />
-    <circle cx="17" cy="18" r="2" />
+    {/* cab */}
+    <path d="M8 6h7a1 1 0 0 1 1 1v7H8z" />
+    {/* cab window detail */}
+    <path d="M10 8h4v3h-4z" />
+    {/* lift arm */}
+    <path d="M16 8l5 3" />
+    {/* bucket */}
+    <path d="M21 10v3l-3 1v-3z" />
+    {/* chassis */}
+    <path d="M4 14h14v3H4z" />
+    {/* tracks/wheels */}
+    <circle cx="7" cy="18" r="1.6" />
+    <circle cx="15" cy="18" r="1.6" />
   </svg>
 );
 
