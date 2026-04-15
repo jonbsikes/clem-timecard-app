@@ -23,7 +23,7 @@ export default async function FieldProjectDetail({ params }: { params: Promise<{
       .eq("project_id", id)
       .order("uploaded_at", { ascending: false }),
   ]);
-  if (\!project) return notFound();
+  if (!project) return notFound();
 
   const list = docs ?? [];
 

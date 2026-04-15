@@ -26,7 +26,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
       .eq("project_id", id)
       .order("uploaded_at", { ascending: false }),
   ]);
-  if (\!project) return notFound();
+  if (!project) return notFound();
 
   return (
     <div className="space-y-6">

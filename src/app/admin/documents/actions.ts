@@ -6,11 +6,11 @@ import { getSessionUser } from "@/lib/supabase/server";
 
 export async function deleteProjectDocument(formData: FormData) {
   const user = await getSessionUser();
-  if (\!user || user.role \!== "admin") {
+  if (!user || user.role !== "admin") {
     throw new Error("Not authorized");
   }
   const id = String(formData.get("id"));
-  if (\!id) return;
+  if (!id) return;
 
   const supabase = await createClient();
   const { data: doc } = await supabase
@@ -18,7 +18,7 @@ export async function deleteProjectDocument(formData: FormData) {
     .select("id, storage_path")
     .eq("id", id)
     .maybeSingle();
-  if (\!doc) return;
+  if (!doc) return;
 
   // Remove the storage object if we have its path; swallow errors so the DB row is
   // always cleaned up even if the blob is already gone.

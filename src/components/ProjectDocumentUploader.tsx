@@ -27,7 +27,7 @@ export default function ProjectDocumentUploader({ projectId, projects }: Props) 
   const targetProject = projectId ?? selectedProject;
 
   async function upload() {
-    if (\!file || \!targetProject) return;
+    if (!file || !targetProject) return;
     setBusy(true);
     setErr(null);
     setOk(null);
@@ -69,7 +69,7 @@ export default function ProjectDocumentUploader({ projectId, projects }: Props) 
   return (
     <div className="space-y-2">
       <div className="flex flex-wrap items-end gap-2">
-        {\!projectId && projects && projects.length > 0 && (
+        {!projectId && projects && projects.length > 0 && (
           <div className="min-w-[200px]">
             <label className="label">Project</label>
             <select
@@ -109,7 +109,7 @@ export default function ProjectDocumentUploader({ projectId, projects }: Props) 
         <button
           type="button"
           className="btn-primary"
-          disabled={\!file || \!targetProject || busy}
+          disabled={!file || !targetProject || busy}
           onClick={upload}
         >
           {busy ? "Uploading..." : "Upload"}
