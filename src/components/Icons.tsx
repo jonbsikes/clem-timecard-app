@@ -61,9 +61,11 @@ export const IconProjects = (p: IconProps) => (
   </svg>
 );
 
-export const IconWrench = (p: IconProps) => (
+export const IconHammer = (p: IconProps) => (
   <svg {...base(p)}>
-    <path d="M14.7 6.3a4 4 0 0 1 5 5l-2.3-2.3-1.4 1.4 2.3 2.3a4 4 0 0 1-5-5l-7 7a2 2 0 0 0 2.8 2.8l7-7z" />
+    <path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9" />
+    <path d="M17.64 15 22 10.64" />
+    <path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 5.6a5.009 5.009 0 0 0-6.22.44L12 8.5l5 5 1.6-1.6c.87-.87 2.28-.87 3.18 0 .05.04.15.05.13.8z" />
   </svg>
 );
 
