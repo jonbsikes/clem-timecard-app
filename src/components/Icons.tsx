@@ -72,30 +72,12 @@ export const IconProjects = (p: IconProps) => (
   </svg>
 );
 
-// Work Types: construction worker bent over, digging with shovel
-export const IconWrench = (p: IconProps) => (
+// Work Types: hammer
+export const IconHammer = (p: IconProps) => (
   <svg {...base(p)}>
-    {/* hard hat */}
-    <path d="M5 6.5a3 3 0 0 1 6 0" />
-    <path d="M4 6.5h8" />
-    {/* head */}
-    <circle cx="8" cy="8.5" r="1.5" />
-    {/* bent-over back */}
-    <path d="M8.5 10l3 4" />
-    {/* front leg */}
-    <path d="M11.5 14l-1 6" />
-    {/* back leg */}
-    <path d="M11.5 14l3 6" />
-    {/* arms down to shovel handle */}
-    <path d="M10 11l6 5" />
-    <path d="M10.8 12.2l5.5 5" />
-    {/* shovel handle */}
-    <path d="M14 14l4 4" />
-    {/* shovel blade */}
-    <path d="M17 17l3 1-1 3-3-1z" />
-    {/* ground / dirt pile */}
-    <path d="M3 21h18" />
-    <path d="M13 19.5c1-.8 2-.8 3 0" />
+    <path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9" />
+    <path d="M17.64 15 22 10.64" />
+    <path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 5.6a5.009 5.009 0 0 0-6.22.44L12 8.5l5 5 1.6-1.6c.87-.87 2.28-.87 3.18 0 .05.04.15.05.13.8z" />
   </svg>
 );
 
