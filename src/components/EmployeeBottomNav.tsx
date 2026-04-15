@@ -1,10 +1,10 @@
 "use client";
+import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IconHistory, IconPlus, IconDocs, IconShield } from "./Icons";
 
 type Props = {
-  /** When the current viewer is an admin, surface an extra "Admin" tile that jumps back to the admin hub. */
   isAdmin?: boolean;
 };
 
@@ -14,7 +14,7 @@ export default function EmployeeBottomNav({ isAdmin = false }: Props) {
   type Item = {
     href: string;
     label: string;
-    Icon: (p: any) => JSX.Element;
+    Icon: (p: any) => React.ReactElement;
     primary?: boolean;
     active?: boolean;
   };
@@ -58,7 +58,7 @@ export default function EmployeeBottomNav({ isAdmin = false }: Props) {
       className="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur border-t border-slate-200 shadow-[0_-4px_16px_rgba(0,0,0,0.04)]"
       aria-label="Employee navigation"
     >
-      <ul className={`max-w-xl mx-auto grid ${cols} items-end px-2`}>
+      <ul className={"max-w-xl mx-auto grid " + cols + " items-end px-2"}>
         {items.map(({ href, label, Icon, primary, active }) => (
           <li key={label} className="flex justify-center">
             {primary ? (
@@ -77,9 +77,10 @@ export default function EmployeeBottomNav({ isAdmin = false }: Props) {
             ) : (
               <Link
                 href={href}
-                className={`flex flex-col items-center gap-1 py-3 px-2 min-w-[72px] ${
-                  active ? "text-brand" : "text-slate-600"
-                }`}
+                className={
+                  "flex flex-col items-center gap-1 py-3 px-2 min-w-[72px] " +
+                  (active ? "text-brand" : "text-slate-600")
+                }
               >
                 <Icon size={26} />
                 <span className="text-[11px] font-semibold leading-tight">
