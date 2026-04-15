@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { format } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -23,7 +24,7 @@ export default async function CompanyTimeDashboard({ searchParams }: { searchPar
       id, work_date, submitted_at, locked,
       users(id, full_name),
       projects(id, name),
-      time_card_entries(id, hours, job_status, work_types(name), equipment(name), notes)
+      time_card_entries(id, hours, job_status, work_types(name), equipment(name), notes, entry_photos(id, file_url))
     `)
     .gte("work_date", from)
     .lte("work_date", to)
@@ -123,7 +124,7 @@ export default async function CompanyTimeDashboard({ searchParams }: { searchPar
                     {format(new Date(c.work_date), "EEE, MMM d")} — {c.projects?.name}
                   </div>
                   <div className="text-sm text-slate-600">
-                    {c.users?.full_name || "Unknown"} · submitted {format(new Date(c.submitted_at), "p")}
+                    {c.users?.full_name || "Unknown"} · submitted {formatInTimeZone(new Date(c.submitted_at), "America/Chicago", "p")}
                   </div>
                 </div>
                 <div className="text-right">
@@ -136,12 +137,27 @@ export default async function CompanyTimeDashboard({ searchParams }: { searchPar
                   </Link>
                 </div>
               </div>
-              <ul className="mt-2 text-sm text-slate-700 space-y-1">
+              <ul className="mt-2 text-sm text-slate-700 space-y-2">
                 {c.time_card_entries.map((e: any) => (
                   <li key={e.id}>
-                    • {e.hours} hrs {e.work_types?.name}
-                    {e.equipment?.name ? ` (${e.equipment.name})` : ""} — {e.job_status === "complete" ? "Complete" : "In Progress"}
-                    {e.notes ? ` — ${e.notes}` : ""}
+                    <div>
+                      • {e.hours} hrs {e.work_types?.name}
+                      {e.equipment?.name ? ` (${e.equipment.name})` : ""} — {e.job_status === "complete" ? "Complete" : "In Progress"}
+                      {e.notes ? ` — ${e.notes}` : ""}
+                    </div>
+                    {(e.entry_photos ?? []).length > 0 && (
+                      <div className="mt-1 flex flex-wrap gap-1 pl-3">
+                        {(e.entry_photos as any[]).map((p: any) => (
+                          <a key={p.id} href={p.file_url} target="_blank" rel="noreferrer">
+                            <img
+                              src={p.file_url}
+                              alt=""
+                              className="h-16 w-16 rounded object-cover border border-slate-200"
+                            />
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </li>
                 ))}
               </ul>
