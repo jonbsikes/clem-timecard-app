@@ -63,7 +63,7 @@ export default async function MyTimeCards() {
         <div className="kpi">
           <span className="kpi-label">This Week</span>
           <span className="kpi-value">{fmtHrs(thisWeekHrs)}</span>
-          <span className="kpi-sub">hours &middot; Sun-Sat</span>
+          <span className="kpi-sub">Sun-Sat</span>
         </div>
         <div className="kpi">
           <span className="kpi-label">Last Week</span>
