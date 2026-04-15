@@ -30,7 +30,7 @@ export default function TopNav({ isAdmin = false }: Props) {
         <div className="flex items-center gap-3 min-w-0">
           <Link href="/" aria-label="Home">
             <Image
-              src="/clem.logo.jpg"
+              src="/new-clem-logo.png"
               alt="Clem Excavation and Land Services LLC"
               width={96}
               height={96}

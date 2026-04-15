@@ -46,7 +46,7 @@ export default function LoginForm() {
       <div className="card w-full max-w-sm p-6">
         <div className="flex flex-col items-center text-center mb-6">
           <Image
-            src="/clem.logo.jpg"
+            src="/new-clem-logo.png"
             alt="Clem Excavation & Land Services LLC"
             width={180}
             height={180}
