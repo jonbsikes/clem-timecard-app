@@ -42,16 +42,16 @@ export default function LoginForm() {
   }
 
   return (
-    <main className="min-h-screen grid place-items-center p-6 bg-stone-100">
+    <main className="min-h-screen flex justify-center items-start sm:items-center pt-10 sm:pt-0 px-6 pb-6 bg-stone-100">
       <div className="card w-full max-w-sm p-6">
-        <div className="flex flex-col items-center text-center mb-6">
+        <div className="flex flex-col items-center text-center mb-4">
           <Image
             src="/new-clem-logo.png"
             alt="Clem Excavation & Land Services LLC"
-            width={180}
-            height={180}
+            width={320}
+            height={320}
             priority
-            className="rounded-xl"
+            className="w-64 h-auto max-w-full"
           />
         </div>
 

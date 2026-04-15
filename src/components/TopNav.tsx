@@ -10,10 +10,22 @@ const PAGE_TITLES: Record<string, string> = {
   "/admin": "Admin Dashboard",
 };
 
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function prettify(segment: string): string {
+  return segment.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 function getPageTitle(pathname: string): string {
   if (PAGE_TITLES[pathname]) return PAGE_TITLES[pathname];
-  const segment = pathname.split("/").filter(Boolean).pop() ?? "";
-  return segment.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  const segments = pathname.split("/").filter(Boolean);
+  // Skip trailing UUIDs (detail pages) and fall back to the parent segment.
+  while (segments.length && UUID_RE.test(segments[segments.length - 1])) {
+    segments.pop();
+  }
+  const segment = segments[segments.length - 1] ?? "";
+  return prettify(segment);
 }
 
 type Props = {
@@ -32,10 +44,10 @@ export default function TopNav({ isAdmin = false }: Props) {
             <Image
               src="/new-clem-logo.png"
               alt="Clem Excavation and Land Services LLC"
-              width={96}
-              height={96}
+              width={160}
+              height={160}
               priority
-              className="rounded-lg shrink-0 w-12 h-12 sm:w-14 sm:h-14"
+              className="shrink-0 h-14 w-14 sm:h-16 sm:w-16 object-contain"
             />
           </Link>
           <h1 className="text-lg sm:text-xl font-bold leading-tight text-slate-900 truncate">{title}</h1>
