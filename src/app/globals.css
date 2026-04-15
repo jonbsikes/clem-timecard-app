@@ -3,13 +3,24 @@
 @tailwind utilities;
 
 html, body { height: 100%; }
-body { @apply bg-stone-50 text-stone-900 antialiased; }
+body { @apply bg-slate-50 text-slate-900 antialiased; }
 
-/* Large, finger-friendly tap targets for field use */
-.btn { @apply inline-flex items-center justify-center rounded-lg px-4 py-3 font-medium transition active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed; }
+.has-bottom-nav { padding-bottom: 5.5rem; }
+
+.btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 font-medium transition active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed; }
 .btn-primary { @apply btn bg-brand text-white hover:bg-brand-dark; }
-.btn-secondary { @apply btn bg-stone-200 text-stone-900 hover:bg-stone-300; }
+.btn-secondary { @apply btn bg-slate-200 text-slate-900 hover:bg-slate-300; }
 .btn-danger { @apply btn bg-red-600 text-white hover:bg-red-700; }
-.input { @apply w-full rounded-lg border border-stone-300 bg-white px-3 py-3 text-base shadow-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30; }
-.label { @apply block text-sm font-medium text-stone-700 mb-1; }
-.card { @apply rounded-xl bg-white shadow-sm border border-stone-200; }
+.input { @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-3 text-base shadow-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30; }
+.label { @apply block text-sm font-medium text-slate-700 mb-1; }
+.card { @apply rounded-xl bg-white shadow-sm border border-slate-200; }
+
+.icon-tile {
+  @apply flex flex-col items-center justify-center gap-2 rounded-2xl bg-white border border-slate-200 shadow-sm p-5 sm:p-6 text-slate-800 hover:border-brand hover:shadow-md hover:text-brand transition text-center min-h-[110px];
+}
+.icon-tile-label { @apply text-sm sm:text-base font-semibold leading-tight; }
+
+.kpi { @apply rounded-2xl bg-white border border-slate-200 shadow-sm p-4 flex flex-col gap-1; }
+.kpi-label { @apply text-xs font-medium uppercase tracking-wide text-slate-500; }
+.kpi-value { @apply text-2xl sm:text-3xl font-bold text-brand-dark; }
+.kpi-sub   { @apply text-xs text-slate-500; }
