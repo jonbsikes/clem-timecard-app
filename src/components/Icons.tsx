@@ -55,64 +55,70 @@ export const IconBuilding = (p: IconProps) => (
   </svg>
 );
 
-// Projects: horizon landscape with a setting sun and trees
+// Projects: plot of land (parcel) with a tree and a location pin
 export const IconProjects = (p: IconProps) => (
   <svg {...base(p)}>
-    {/* sun on the horizon */}
-    <circle cx="12" cy="15" r="3.2" />
-    {/* horizon line */}
-    <path d="M2 15h20" />
-    {/* sun rays above horizon */}
-    <path d="M12 9.5v1.5M7.5 11.5l1 1M16.5 11.5l-1 1" />
-    {/* left tree (pine) */}
-    <path d="M5 15l2-4 2 4z" />
-    <path d="M7 15v2.5" />
-    {/* right tree (pine) */}
-    <path d="M16 15l2.2-4.5 2.2 4.5z" />
-    <path d="M18.2 15v2.5" />
-    {/* ground */}
-    <path d="M3 19h18" />
+    {/* parcel / plot outline (diamond) */}
+    <path d="M12 4l9 7-9 7-9-7z" />
+    {/* path across the plot */}
+    <path d="M7 11.5l5 3.5 5-3.5" />
+    {/* tree trunk */}
+    <path d="M8 11v2" />
+    {/* tree canopy */}
+    <circle cx="8" cy="9" r="2" />
+    {/* location pin */}
+    <path d="M15 9.5a1.8 1.8 0 1 1 3.6 0c0 1.4-1.8 3-1.8 3s-1.8-1.6-1.8-3z" />
+    <circle cx="16.8" cy="9.5" r="0.6" />
   </svg>
 );
 
-// Work Types: construction worker with a shovel
+// Work Types: construction worker bent over, digging with shovel
 export const IconWrench = (p: IconProps) => (
   <svg {...base(p)}>
     {/* hard hat */}
-    <path d="M7.5 7.5a3.5 3.5 0 0 1 7 0" />
-    <path d="M6.5 7.5h9" />
+    <path d="M5 6.5a3 3 0 0 1 6 0" />
+    <path d="M4 6.5h8" />
     {/* head */}
-    <circle cx="11" cy="10" r="2" />
-    {/* body */}
-    <path d="M11 12v5" />
-    {/* arms - one holding shovel */}
-    <path d="M11 13l3.5 2" />
-    <path d="M11 13l-2.5 2" />
-    {/* legs */}
-    <path d="M11 17l-2 4M11 17l2 4" />
+    <circle cx="8" cy="8.5" r="1.5" />
+    {/* bent-over back */}
+    <path d="M8.5 10l3 4" />
+    {/* front leg */}
+    <path d="M11.5 14l-1 6" />
+    {/* back leg */}
+    <path d="M11.5 14l3 6" />
+    {/* arms down to shovel handle */}
+    <path d="M10 11l6 5" />
+    <path d="M10.8 12.2l5.5 5" />
     {/* shovel handle */}
-    <path d="M14.5 15l4.5-4.5" />
+    <path d="M14 14l4 4" />
     {/* shovel blade */}
-    <path d="M19 10.5l2.5 2.5-1.5 1.5-2.5-2.5z" />
+    <path d="M17 17l3 1-1 3-3-1z" />
+    {/* ground / dirt pile */}
+    <path d="M3 21h18" />
+    <path d="M13 19.5c1-.8 2-.8 3 0" />
   </svg>
 );
 
-// Equipment: skid steer loader
+// Equipment: skid steer loader (tracked, side view)
 export const IconTruck = (p: IconProps) => (
   <svg {...base(p)}>
     {/* cab */}
-    <path d="M8 6h7a1 1 0 0 1 1 1v7H8z" />
-    {/* cab window detail */}
-    <path d="M10 8h4v3h-4z" />
-    {/* lift arm */}
-    <path d="M16 8l5 3" />
+    <path d="M8 6h6v6H7z" />
+    {/* cab window */}
+    <path d="M9 7.5h3.5v3H9z" />
+    {/* lift arm from cab over to bucket */}
+    <path d="M14 7l6 5" />
     {/* bucket */}
-    <path d="M21 10v3l-3 1v-3z" />
-    {/* chassis */}
-    <path d="M4 14h14v3H4z" />
-    {/* tracks/wheels */}
-    <circle cx="7" cy="18" r="1.6" />
-    <circle cx="15" cy="18" r="1.6" />
+    <path d="M20 11.5l2 .5-1 3-2-.5z" />
+    {/* chassis body */}
+    <path d="M4 12h15v4H4z" />
+    {/* track outline */}
+    <rect x="3" y="16" width="17" height="3.5" rx="1.75" />
+    {/* track rollers */}
+    <circle cx="6" cy="17.75" r="0.6" />
+    <circle cx="10" cy="17.75" r="0.6" />
+    <circle cx="14" cy="17.75" r="0.6" />
+    <circle cx="18" cy="17.75" r="0.6" />
   </svg>
 );
 
