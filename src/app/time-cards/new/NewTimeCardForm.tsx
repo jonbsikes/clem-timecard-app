@@ -11,6 +11,7 @@ type WorkType = { id: string; name: string };
 
 type Entry = {
   id: string;
+  project_id: string;
   hours: string;
   work_type_id: string;
   equipment_id: string;
@@ -20,6 +21,19 @@ type Entry = {
 };
 
 const uid = () => Math.random().toString(36).slice(2);
+
+function makeEntry(projects: Project[], workTypes: WorkType[]): Entry {
+  return {
+    id: uid(),
+    project_id: projects[0]?.id ?? "",
+    hours: "",
+    work_type_id: workTypes[0]?.id ?? "",
+    equipment_id: "",
+    job_status: "in_progress",
+    notes: "",
+    photos: [],
+  };
+}
 
 export default function NewTimeCardForm({
   projects,
@@ -32,12 +46,8 @@ export default function NewTimeCardForm({
 }) {
   const router = useRouter();
   const today = format(new Date(), "yyyy-MM-dd");
-  const [projectId, setProjectId] = useState(projects[0]?.id ?? "");
-  const [projectDetails, setProjectDetails] = useState("");
   const [workDate, setWorkDate] = useState(today);
-  const [entries, setEntries] = useState<Entry[]>([
-    { id: uid(), hours: "", work_type_id: workTypes[0]?.id ?? "", equipment_id: "", job_status: "in_progress", notes: "", photos: [] },
-  ]);
+  const [entries, setEntries] = useState<Entry[]>([makeEntry(projects, workTypes)]);
   const [gps, setGps] = useState<{ lat: number; lng: number } | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -62,10 +72,7 @@ export default function NewTimeCardForm({
     setEntries((es) => es.map((e) => (e.id === id ? { ...e, ...patch } : e)));
   }
   function addEntry() {
-    setEntries((es) => [
-      ...es,
-      { id: uid(), hours: "", work_type_id: workTypes[0]?.id ?? "", equipment_id: "", job_status: "in_progress", notes: "", photos: [] },
-    ]);
+    setEntries((es) => [...es, makeEntry(projects, workTypes)]);
   }
   function removeEntry(id: string) {
     setEntries((es) => (es.length === 1 ? es : es.filter((e) => e.id !== id)));
@@ -74,8 +81,9 @@ export default function NewTimeCardForm({
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErr(null);
-    if (!projectId) return setErr("Please select a project.");
+    if (entries.some((en) => !en.project_id)) return setErr("Each entry needs a project.");
     const cleaned = entries.map((en) => ({
+      project_id: en.project_id,
       hours: parseFloat(en.hours),
       work_type_id: en.work_type_id,
       equipment_id: en.equipment_id || null,
@@ -86,8 +94,6 @@ export default function NewTimeCardForm({
     if (cleaned.some((e) => !e.work_type_id)) return setErr("Each entry needs a work type.");
 
     const payload = {
-      project_id: projectId,
-      project_details: projectDetails || null,
       work_date: workDate,
       gps_lat: gps?.lat ?? null,
       gps_lng: gps?.lng ?? null,
@@ -118,10 +124,9 @@ export default function NewTimeCardForm({
         throw new Error(j.error || "Submit failed");
       }
       const created = (await res.json().catch(() => ({}))) as {
-        id?: string;
         entry_ids?: string[];
       };
-      // Upload photos for each entry (if any) — best-effort, errors don't block nav.
+      // Upload photos per entry (best-effort).
       const entryIds = created.entry_ids ?? [];
       const hasPhotos = entries.some((en) => en.photos.length > 0);
       if (hasPhotos && entryIds.length === entries.length) {
@@ -161,7 +166,6 @@ export default function NewTimeCardForm({
       router.push("/time-cards");
       router.refresh();
     } catch (ex: any) {
-      // Network failure -> queue it
       try {
         await enqueue({ id: uid(), payload, queuedAt: Date.now() });
         setQueued(true);
@@ -177,28 +181,6 @@ export default function NewTimeCardForm({
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="card p-4 space-y-3">
-        <div>
-          <label className="label" htmlFor="project">Project</label>
-          <select id="project" className="input" value={projectId} onChange={(e) => setProjectId(e.target.value)}>
-            {projects.length === 0 && <option value="">(no active projects)</option>}
-            {projects.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="label" htmlFor="project-details">Additional project details</label>
-          <input
-            id="project-details"
-            type="text"
-            className="input placeholder:text-stone-400 placeholder:italic"
-            placeholder="ie address, lot/block"
-            value={projectDetails}
-            onChange={(e) => setProjectDetails(e.target.value)}
-          />
-        </div>
         <div>
           <label className="label" htmlFor="date">Date</label>
           <input id="date" type="date" className="input" value={workDate}
@@ -218,6 +200,16 @@ export default function NewTimeCardForm({
                 Remove
               </button>
             )}
+          </div>
+          <div>
+            <label className="label">Project</label>
+            <select className="input" value={en.project_id}
+                    onChange={(e) => update(en.id, { project_id: e.target.value })}>
+              {projects.length === 0 && <option value="">(no active projects)</option>}
+              {projects.map((p) => (
+                <option key={p.id} value={p.id}>{p.name}</option>
+              ))}
+            </select>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>

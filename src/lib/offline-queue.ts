@@ -17,11 +17,11 @@ async function db(): Promise<IDBPDatabase> {
 export interface QueuedTimeCard {
   id: string; // local uuid
   payload: {
-    project_id: string;
     work_date: string;
     gps_lat: number | null;
     gps_lng: number | null;
     entries: {
+      project_id: string;
       hours: number;
       work_type_id: string;
       equipment_id: string | null;

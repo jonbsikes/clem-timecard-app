@@ -23,14 +23,19 @@ export default async function MyTimeCards() {
   const supabase = await createClient();
   const now = new Date();
 
+  const { data: { user } } = await supabase.auth.getUser();
+
   const yearStart = startOfYear(now);
-  const { data: cards } = await supabase
-    .from("time_cards")
-    .select(
-      "id, work_date, submitted_at, locked, project_id, projects(name, client_name), time_card_entries(hours)"
-    )
-    .gte("work_date", format(yearStart, "yyyy-MM-dd"))
-    .order("work_date", { ascending: false });
+  const { data: cards } = user
+    ? await supabase
+        .from("time_cards")
+        .select(
+          "id, work_date, submitted_at, locked, project_id, projects(name, client_name), time_card_entries(hours)"
+        )
+        .eq("user_id", user.id)
+        .gte("work_date", format(yearStart, "yyyy-MM-dd"))
+        .order("work_date", { ascending: false })
+    : { data: [] };
 
   const all = cards ?? [];
 
